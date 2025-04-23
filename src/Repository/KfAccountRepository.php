@@ -5,7 +5,6 @@ namespace WechatOfficialAccountCustomServiceBundle\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use DoctrineEnhanceBundle\Repository\CommonRepositoryAware;
 use WechatOfficialAccountCustomServiceBundle\Entity\KfAccount;
 use WechatOfficialAccountCustomServiceBundle\Enum\KfAccountStatus;
 
@@ -17,8 +16,6 @@ use WechatOfficialAccountCustomServiceBundle\Enum\KfAccountStatus;
  */
 class KfAccountRepository extends ServiceEntityRepository
 {
-    use CommonRepositoryAware;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, KfAccount::class);
