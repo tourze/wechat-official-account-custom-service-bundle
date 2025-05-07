@@ -16,6 +16,7 @@
     "symfony/framework-bundle": "^6.4",
     "symfony/yaml": "^6.4 || ^7.1",
     "tourze/enum-extra": "~0.0.5",
+    "tourze/easy-admin-menu-bundle": "0.1.*",
     "tourze/wechat-official-account-bundle": "0.0.*",
     "tourze/easy-admin-attribute": "0.1.*"
   },
