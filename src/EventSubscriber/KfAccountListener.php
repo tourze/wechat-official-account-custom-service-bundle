@@ -4,8 +4,8 @@ namespace WechatOfficialAccountCustomServiceBundle\EventSubscriber;
 
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Events;
-use FileSystemBundle\Service\MountManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use WechatOfficialAccountBundle\Service\OfficialAccountClient;
 use WechatOfficialAccountCustomServiceBundle\Entity\KfAccount;
 use WechatOfficialAccountCustomServiceBundle\Enum\KfAccountStatus;
@@ -22,7 +22,6 @@ class KfAccountListener
     public function __construct(
         private readonly OfficialAccountClient $client,
         private readonly LoggerInterface $logger,
-        private readonly MountManager $mountManager,
     ) {
     }
 
@@ -126,7 +125,7 @@ class KfAccountListener
             $request = new UploadKfAccountHeadimgRequest();
             $request->setAccount($account->getAccount());
             $request->setKfAccount($account->getKfAccount());
-            $request->setFile($this->mountManager->generateUploadFileFromUrl($account->getAvatar()));
+            $request->setFile($this->generateUploadFileFromUrl($account->getAvatar()));
 
             $this->client->request($request);
         } catch (\Throwable $exception) {
@@ -135,5 +134,26 @@ class KfAccountListener
                 'exception' => $exception,
             ]);
         }
+    }
+
+    /**
+     * 读取远程URL的内容，并生成一个上传文件对象
+     */
+    private function generateUploadFileFromUrl(string $url): UploadedFile
+    {
+        $content = file_get_contents($url);
+        $file = tempnam(sys_get_temp_dir(), 'upload_file');
+        file_put_contents($file, $content);
+        $name = basename($url);
+
+        return $this->generateUploadFileFromPath($file, $name);
+    }
+
+    private function generateUploadFileFromPath(string $path, string|null $name = null): UploadedFile
+    {
+        if ($name === null) {
+            $name = basename($path);
+        }
+        return new UploadedFile($path, $name);
     }
 }

@@ -18,3 +18,5 @@ services:
     resource: '../../Repository/'
   WechatOfficialAccountCustomServiceBundle\Service\:
     resource: '../../Service/'
+
+  Tourze\FileNameGenerator\RandomNameGenerator: ~
