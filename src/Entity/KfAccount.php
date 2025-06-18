@@ -6,35 +6,20 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Tourze\DoctrineSnowflakeBundle\Service\SnowflakeIdGenerator;
 use Tourze\DoctrineTimestampBundle\Traits\TimestampableAware;
-use Tourze\DoctrineUserBundle\Attribute\CreatedByColumn;
-use Tourze\DoctrineUserBundle\Attribute\UpdatedByColumn;
-use Tourze\EasyAdmin\Attribute\Column\ExportColumn;
-use Tourze\EasyAdmin\Attribute\Column\ListColumn;
-use Tourze\EasyAdmin\Attribute\Permission\AsPermission;
+use Tourze\DoctrineUserBundle\Traits\BlameableAware;
 use WechatOfficialAccountBundle\Entity\Account;
 use WechatOfficialAccountCustomServiceBundle\Enum\KfAccountStatus;
 use WechatOfficialAccountCustomServiceBundle\Repository\KfAccountRepository;
 
-#[AsPermission(title: '客服账号')]
 #[ORM\Table(name: 'wechat_kf_account', options: ['comment' => '微信公众号客服账号表'])]
 #[ORM\Entity(repositoryClass: KfAccountRepository::class)]
-class KfAccount
+class KfAccount implements \Stringable
 {
-    #[ExportColumn]
-    #[ListColumn(order: -1, sorter: true)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(SnowflakeIdGenerator::class)]
     #[ORM\Column(type: Types::BIGINT, nullable: false, options: ['comment' => 'ID'])]
     private ?string $id = null;
-
-    #[CreatedByColumn]
-    #[ORM\Column(nullable: true, options: ['comment' => '创建人'])]
-    private ?string $createdBy = null;
-
-    #[UpdatedByColumn]
-    #[ORM\Column(nullable: true, options: ['comment' => '更新人'])]
-    private ?string $updatedBy = null;
 
     #[ORM\ManyToOne(targetEntity: Account::class)]
     #[ORM\JoinColumn(name: 'account_id', referencedColumnName: 'id', nullable: false, options: ['comment' => '所属公众号'])]
@@ -59,6 +44,7 @@ class KfAccount
     private ?string $kfId = null;
 
     use TimestampableAware;
+    use BlameableAware;
 
     private bool $syncing = false;
 
@@ -67,29 +53,6 @@ class KfAccount
         return $this->id;
     }
 
-    public function setCreatedBy(?string $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
-    public function getCreatedBy(): ?string
-    {
-        return $this->createdBy;
-    }
-
-    public function setUpdatedBy(?string $updatedBy): self
-    {
-        $this->updatedBy = $updatedBy;
-
-        return $this;
-    }
-
-    public function getUpdatedBy(): ?string
-    {
-        return $this->updatedBy;
-    }
 
     public function isSyncing(): bool
     {
@@ -185,5 +148,10 @@ class KfAccount
         $this->kfId = $kfId;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->kfAccount ?? 'New KfAccount';
     }
 }

@@ -23,6 +23,7 @@ use WechatOfficialAccountCustomServiceBundle\Request\GetKfAccountListRequest;
 )]
 class SyncKfAccountCommand extends Command
 {
+    public const NAME = 'wechat-official-account:custom-service:sync-account-list';
     public function __construct(
         private readonly OfficialAccountClient $client,
         private readonly EntityManagerInterface $entityManager,
@@ -43,7 +44,8 @@ class SyncKfAccountCommand extends Command
 
         // 获取需要同步的公众号列表
         $accounts = [];
-        if ($accountId = $input->getOption('account-id')) {
+        $accountId = $input->getOption('account-id');
+        if ($accountId !== null) {
             $account = $this->accountRepository->find($accountId);
             if (!$account) {
                 $io->error(sprintf('公众号 %s 不存在', $accountId));
@@ -103,7 +105,7 @@ class SyncKfAccountCommand extends Command
                 $kf->setSyncing(true);
                 $kf->setNickname($nickname);
                 $kf->setKfId($kfId);
-                if ($avatar) {
+                if ($avatar !== null) {
                     $kf->setAvatar($avatar);
                 }
                 $io->info(sprintf('更新客服账号：%s (ID: %s)', $kfAccount, $kfId));
@@ -116,7 +118,7 @@ class SyncKfAccountCommand extends Command
                 $kf->setNickname($nickname);
                 $kf->setKfId($kfId);
                 $kf->setStatus(KfAccountStatus::ENABLED);
-                if ($avatar) {
+                if ($avatar !== null) {
                     $kf->setAvatar($avatar);
                 }
                 $this->entityManager->persist($kf);

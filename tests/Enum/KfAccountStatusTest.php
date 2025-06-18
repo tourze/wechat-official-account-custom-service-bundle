@@ -27,8 +27,6 @@ class KfAccountStatusTest extends TestCase
     public function testGenOptions_returnsCorrectStructure(): void
     {
         $options = KfAccountStatus::genOptions();
-        
-        $this->assertIsArray($options);
         $this->assertCount(3, $options);
         
         foreach ($options as $item) {
@@ -63,8 +61,6 @@ class KfAccountStatusTest extends TestCase
     public function testToSelectItem_returnsCorrectStructure(): void
     {
         $item = KfAccountStatus::ENABLED->toSelectItem();
-        
-        $this->assertIsArray($item);
         $this->assertArrayHasKey('value', $item);
         $this->assertArrayHasKey('label', $item);
         $this->assertArrayHasKey('text', $item);
@@ -79,8 +75,6 @@ class KfAccountStatusTest extends TestCase
     public function testToArray_returnsCorrectStructure(): void
     {
         $array = KfAccountStatus::DISABLED->toArray();
-        
-        $this->assertIsArray($array);
         $this->assertArrayHasKey('value', $array);
         $this->assertArrayHasKey('label', $array);
         
