@@ -47,7 +47,7 @@ class KfAccountListener
             $this->client->request($request);
 
             // 如果有头像，上传头像
-            if ($account->getAvatar()) {
+            if ($account->getAvatar() !== null) {
                 $this->uploadAvatar($account);
             }
         } catch (\Throwable $exception) {
@@ -117,7 +117,7 @@ class KfAccountListener
      */
     private function uploadAvatar(KfAccount $account): void
     {
-        if (!$account->getAvatar()) {
+        if ($account->getAvatar() === null) {
             return;
         }
 

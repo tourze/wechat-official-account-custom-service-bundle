@@ -12,7 +12,6 @@ class WechatOfficialAccountCustomServiceBundleTest extends TestCase
     {
         $dependencies = WechatOfficialAccountCustomServiceBundle::getBundleDependencies();
         
-        $this->assertIsArray($dependencies);
         $this->assertArrayHasKey(WechatOfficialAccountBundle::class, $dependencies);
         $this->assertSame(['all' => true], $dependencies[WechatOfficialAccountBundle::class]);
     }

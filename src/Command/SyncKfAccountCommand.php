@@ -18,7 +18,7 @@ use WechatOfficialAccountCustomServiceBundle\Repository\KfAccountRepository;
 use WechatOfficialAccountCustomServiceBundle\Request\GetKfAccountListRequest;
 
 #[AsCommand(
-    name: 'wechat-official-account:custom-service:sync-account-list',
+    name: self::NAME,
     description: '同步微信公众号客服账号',
 )]
 class SyncKfAccountCommand extends Command
@@ -47,7 +47,7 @@ class SyncKfAccountCommand extends Command
         $accountId = $input->getOption('account-id');
         if ($accountId !== null) {
             $account = $this->accountRepository->find($accountId);
-            if (!$account) {
+            if ($account === null) {
                 $io->error(sprintf('公众号 %s 不存在', $accountId));
 
                 return Command::FAILURE;
