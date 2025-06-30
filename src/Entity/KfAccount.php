@@ -5,6 +5,7 @@ namespace WechatOfficialAccountCustomServiceBundle\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Tourze\DoctrineSnowflakeBundle\Service\SnowflakeIdGenerator;
+use Tourze\DoctrineSnowflakeBundle\Traits\SnowflakeKeyAware;
 use Tourze\DoctrineTimestampBundle\Traits\TimestampableAware;
 use Tourze\DoctrineUserBundle\Traits\BlameableAware;
 use WechatOfficialAccountBundle\Entity\Account;
@@ -15,11 +16,6 @@ use WechatOfficialAccountCustomServiceBundle\Repository\KfAccountRepository;
 #[ORM\Entity(repositoryClass: KfAccountRepository::class)]
 class KfAccount implements \Stringable
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(SnowflakeIdGenerator::class)]
-    #[ORM\Column(type: Types::BIGINT, nullable: false, options: ['comment' => 'ID'])]
-    private ?string $id = null;
 
     #[ORM\ManyToOne(targetEntity: Account::class)]
     #[ORM\JoinColumn(name: 'account_id', referencedColumnName: 'id', nullable: false, options: ['comment' => '所属公众号'])]
@@ -43,15 +39,12 @@ class KfAccount implements \Stringable
     #[ORM\Column(length: 32, nullable: true, options: ['comment' => '客服ID'])]
     private ?string $kfId = null;
 
+    use SnowflakeKeyAware;
     use TimestampableAware;
     use BlameableAware;
 
     private bool $syncing = false;
 
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
 
 
     public function isSyncing(): bool
