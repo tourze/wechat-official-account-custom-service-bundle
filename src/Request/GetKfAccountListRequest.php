@@ -11,7 +11,7 @@ class GetKfAccountListRequest extends WithAccountRequest
         return 'https://api.weixin.qq.com/cgi-bin/customservice/getkflist';
     }
 
-    public function getRequestOptions(): array
+    public function getRequestOptions(): ?array
     {
         return [];
     }

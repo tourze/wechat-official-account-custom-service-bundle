@@ -4,6 +4,7 @@ namespace WechatOfficialAccountCustomServiceBundle\EventSubscriber;
 
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Events;
+use Monolog\Attribute\WithMonologChannel;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use WechatOfficialAccountBundle\Service\OfficialAccountClient;
@@ -17,6 +18,7 @@ use WechatOfficialAccountCustomServiceBundle\Request\UploadKfAccountHeadimgReque
 #[AsEntityListener(event: Events::postPersist, method: 'postPersist', entity: KfAccount::class)]
 #[AsEntityListener(event: Events::postUpdate, method: 'postUpdate', entity: KfAccount::class)]
 #[AsEntityListener(event: Events::preRemove, method: 'preRemove', entity: KfAccount::class)]
+#[WithMonologChannel(channel: 'wechat_official_account_custom_service')]
 class KfAccountListener
 {
     public function __construct(
@@ -47,7 +49,7 @@ class KfAccountListener
             $this->client->request($request);
 
             // 如果有头像，上传头像
-            if ($account->getAvatar() !== null) {
+            if (null !== $account->getAvatar()) {
                 $this->uploadAvatar($account);
             }
         } catch (\Throwable $exception) {
@@ -76,7 +78,10 @@ class KfAccountListener
             $request->setAccount($account->getAccount());
             $request->setKfAccount($account->getKfAccount());
             $request->setNickname($account->getNickname());
-            $request->setPassword($account->getPassword());
+            $password = $account->getPassword();
+            if (null !== $password) {
+                $request->setPassword($password);
+            }
 
             $this->client->request($request);
 
@@ -117,7 +122,8 @@ class KfAccountListener
      */
     private function uploadAvatar(KfAccount $account): void
     {
-        if ($account->getAvatar() === null) {
+        $avatar = $account->getAvatar();
+        if (null === $avatar) {
             return;
         }
 
@@ -125,7 +131,7 @@ class KfAccountListener
             $request = new UploadKfAccountHeadimgRequest();
             $request->setAccount($account->getAccount());
             $request->setKfAccount($account->getKfAccount());
-            $request->setFile($this->generateUploadFileFromUrl($account->getAvatar()));
+            $request->setFile($this->generateUploadFileFromUrl($avatar));
 
             $this->client->request($request);
         } catch (\Throwable $exception) {
@@ -149,11 +155,12 @@ class KfAccountListener
         return $this->generateUploadFileFromPath($file, $name);
     }
 
-    private function generateUploadFileFromPath(string $path, string|null $name = null): UploadedFile
+    private function generateUploadFileFromPath(string $path, ?string $name = null): UploadedFile
     {
-        if ($name === null) {
+        if (null === $name) {
             $name = basename($path);
         }
+
         return new UploadedFile($path, $name);
     }
 }

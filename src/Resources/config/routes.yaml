@@ -1,3 +1,0 @@
-wechat_official_account_custom_service_controllers:
-  resource: '../../Controller/'
-  type: attribute

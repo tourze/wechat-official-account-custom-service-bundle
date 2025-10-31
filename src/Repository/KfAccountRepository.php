@@ -5,15 +5,14 @@ namespace WechatOfficialAccountCustomServiceBundle\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Tourze\PHPUnitSymfonyKernelTest\Attribute\AsRepository;
 use WechatOfficialAccountCustomServiceBundle\Entity\KfAccount;
 use WechatOfficialAccountCustomServiceBundle\Enum\KfAccountStatus;
 
 /**
- * @method KfAccount|null find($id, $lockMode = null, $lockVersion = null)
- * @method KfAccount|null findOneBy(array $criteria, array $orderBy = null)
- * @method KfAccount[]    findAll()
- * @method KfAccount[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends ServiceEntityRepository<KfAccount>
  */
+#[AsRepository(entityClass: KfAccount::class)]
 class KfAccountRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -28,12 +27,14 @@ class KfAccountRepository extends ServiceEntityRepository
      */
     public function findAllEnabled(): array
     {
+        /** @var KfAccount[] */
         return $this->createQueryBuilder('k')
             ->andWhere('k.status = :status')
             ->setParameter('status', KfAccountStatus::ENABLED)
-            ->orderBy('k.createdAt', 'DESC')
+            ->orderBy('k.updateTime', 'DESC')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 
     /**
@@ -41,11 +42,13 @@ class KfAccountRepository extends ServiceEntityRepository
      */
     public function findOneByKfAccount(string $kfAccount): ?KfAccount
     {
+        /** @var KfAccount|null */
         return $this->createQueryBuilder('k')
             ->andWhere('k.kfAccount = :kfAccount')
             ->setParameter('kfAccount', $kfAccount)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
     }
 
     /**
@@ -54,7 +57,8 @@ class KfAccountRepository extends ServiceEntityRepository
     public function getQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('k')
-            ->orderBy('k.createdAt', 'DESC');
+            ->orderBy('k.updateTime', 'DESC')
+        ;
     }
 
     /**
@@ -64,11 +68,13 @@ class KfAccountRepository extends ServiceEntityRepository
      */
     public function countGroupByStatus(): array
     {
+        /** @var array<array{status: KfAccountStatus, count: int|string}> $result */
         $result = $this->createQueryBuilder('k')
             ->select('k.status', 'COUNT(k.id) as count')
             ->groupBy('k.status')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
 
         $counts = [];
         foreach ($result as $row) {
@@ -76,5 +82,23 @@ class KfAccountRepository extends ServiceEntityRepository
         }
 
         return $counts;
+    }
+
+    public function save(KfAccount $entity, bool $flush = true): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(KfAccount $entity, bool $flush = true): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 }

@@ -1,16 +1,22 @@
 <?php
 
-namespace WechatOfficialAccountCustomServiceBundle\Tests\Unit\Request;
+namespace WechatOfficialAccountCustomServiceBundle\Tests\Request;
 
-use PHPUnit\Framework\TestCase;
+use HttpClientBundle\Tests\Request\RequestTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use WechatOfficialAccountCustomServiceBundle\Request\AddKfAccountRequest;
 
-class AddKfAccountRequestTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(AddKfAccountRequest::class)]
+final class AddKfAccountRequestTest extends RequestTestCase
 {
     public function testGetRequestPath(): void
     {
         $request = new AddKfAccountRequest();
-        
+
         $this->assertEquals('https://api.weixin.qq.com/customservice/kfaccount/add', $request->getRequestPath());
     }
 
@@ -18,68 +24,61 @@ class AddKfAccountRequestTest extends TestCase
     {
         $request = new AddKfAccountRequest();
         $request->setKfAccount('test@account');
-        
+
         $this->assertEquals('test@account', $request->getKfAccount());
     }
 
     public function testNicknameGetterAndSetter(): void
     {
         $request = new AddKfAccountRequest();
-        $request->setNickname('Test User');
-        
-        $this->assertEquals('Test User', $request->getNickname());
+        $request->setNickname('Test Nickname');
+
+        $this->assertEquals('Test Nickname', $request->getNickname());
     }
 
     public function testPasswordGetterAndSetter(): void
     {
         $request = new AddKfAccountRequest();
-        $request->setPassword('password123');
-        
-        $this->assertEquals('password123', $request->getPassword());
+        $request->setPassword('test_password');
+
+        $this->assertEquals('test_password', $request->getPassword());
     }
 
-    public function testPasswordIsNullByDefault(): void
-    {
-        $request = new AddKfAccountRequest();
-        
-        $this->assertNull($request->getPassword());
-    }
-
-    public function testGetRequestOptionsWithoutPassword(): void
+    public function testGetRequestOptions(): void
     {
         $request = new AddKfAccountRequest();
         $request->setKfAccount('test@account');
-        $request->setNickname('Test User');
-        
+        $request->setNickname('Test Nickname');
+        $request->setPassword('test_password');
+
         $options = $request->getRequestOptions();
-        
+
         $expected = [
             'json' => [
                 'kf_account' => 'test@account',
-                'nickname' => 'Test User',
+                'nickname' => 'Test Nickname',
+                'password' => 'test_password',
             ],
         ];
-        
+
         $this->assertEquals($expected, $options);
     }
 
-    public function testGetRequestOptionsWithPassword(): void
+    public function testGetRequestOptionsWithOptionalFields(): void
     {
         $request = new AddKfAccountRequest();
         $request->setKfAccount('test@account');
-        $request->setNickname('Test User');
-        $request->setPassword('password123');
-        
+        $request->setNickname('Test Nickname');
+
         $options = $request->getRequestOptions();
-        
+
         $expected = [
             'json' => [
                 'kf_account' => 'test@account',
-                'nickname' => 'Test User',
-                'password' => 'password123',
+                'nickname' => 'Test Nickname',
             ],
         ];
-        
+
         $this->assertEquals($expected, $options);
     }
 }

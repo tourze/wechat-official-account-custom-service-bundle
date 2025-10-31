@@ -1,16 +1,22 @@
 <?php
 
-namespace WechatOfficialAccountCustomServiceBundle\Tests\Unit\Request;
+namespace WechatOfficialAccountCustomServiceBundle\Tests\Request;
 
-use PHPUnit\Framework\TestCase;
+use HttpClientBundle\Tests\Request\RequestTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use WechatOfficialAccountCustomServiceBundle\Request\UpdateKfAccountRequest;
 
-class UpdateKfAccountRequestTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(UpdateKfAccountRequest::class)]
+final class UpdateKfAccountRequestTest extends RequestTestCase
 {
     public function testGetRequestPath(): void
     {
         $request = new UpdateKfAccountRequest();
-        
+
         $this->assertEquals('https://api.weixin.qq.com/customservice/kfaccount/update', $request->getRequestPath());
     }
 
@@ -18,7 +24,7 @@ class UpdateKfAccountRequestTest extends TestCase
     {
         $request = new UpdateKfAccountRequest();
         $request->setKfAccount('test@account');
-        
+
         $this->assertEquals('test@account', $request->getKfAccount());
     }
 
@@ -26,7 +32,7 @@ class UpdateKfAccountRequestTest extends TestCase
     {
         $request = new UpdateKfAccountRequest();
         $request->setNickname('Test User');
-        
+
         $this->assertEquals('Test User', $request->getNickname());
     }
 
@@ -34,7 +40,7 @@ class UpdateKfAccountRequestTest extends TestCase
     {
         $request = new UpdateKfAccountRequest();
         $request->setPassword('password123');
-        
+
         $this->assertEquals('password123', $request->getPassword());
     }
 
@@ -44,9 +50,9 @@ class UpdateKfAccountRequestTest extends TestCase
         $request->setKfAccount('test@account');
         $request->setNickname('Test User');
         $request->setPassword('password123');
-        
+
         $options = $request->getRequestOptions();
-        
+
         $expected = [
             'json' => [
                 'kf_account' => 'test@account',
@@ -54,7 +60,7 @@ class UpdateKfAccountRequestTest extends TestCase
                 'password' => 'password123',
             ],
         ];
-        
+
         $this->assertEquals($expected, $options);
     }
 }

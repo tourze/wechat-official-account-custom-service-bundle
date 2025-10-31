@@ -19,4 +19,12 @@ services:
   WechatOfficialAccountCustomServiceBundle\Service\:
     resource: '../../Service/'
 
+  # 绑定字段工厂接口
+  WechatOfficialAccountCustomServiceBundle\Service\FieldFactoryInterface:
+    '@WechatOfficialAccountCustomServiceBundle\Service\FieldService'
+
   Tourze\FileNameGenerator\RandomNameGenerator: ~
+
+  # 绑定 EasyAdminEnumFieldBundle 服务
+  Tourze\EasyAdminEnumFieldBundle\Service\EnumFieldFactoryInterface:
+    alias: Tourze\EasyAdminEnumFieldBundle\Service\EnumFieldFactory

@@ -1,16 +1,22 @@
 <?php
 
-namespace WechatOfficialAccountCustomServiceBundle\Tests\Unit\Request;
+namespace WechatOfficialAccountCustomServiceBundle\Tests\Request;
 
-use PHPUnit\Framework\TestCase;
+use HttpClientBundle\Tests\Request\RequestTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use WechatOfficialAccountCustomServiceBundle\Request\DeleteKfAccountRequest;
 
-class DeleteKfAccountRequestTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(DeleteKfAccountRequest::class)]
+final class DeleteKfAccountRequestTest extends RequestTestCase
 {
     public function testGetRequestPath(): void
     {
         $request = new DeleteKfAccountRequest();
-        
+
         $this->assertEquals('https://api.weixin.qq.com/customservice/kfaccount/del', $request->getRequestPath());
     }
 
@@ -18,7 +24,7 @@ class DeleteKfAccountRequestTest extends TestCase
     {
         $request = new DeleteKfAccountRequest();
         $request->setKfAccount('test@account');
-        
+
         $this->assertEquals('test@account', $request->getKfAccount());
     }
 
@@ -26,15 +32,15 @@ class DeleteKfAccountRequestTest extends TestCase
     {
         $request = new DeleteKfAccountRequest();
         $request->setKfAccount('test@account');
-        
+
         $options = $request->getRequestOptions();
-        
+
         $expected = [
             'json' => [
                 'kf_account' => 'test@account',
             ],
         ];
-        
+
         $this->assertEquals($expected, $options);
     }
 }
