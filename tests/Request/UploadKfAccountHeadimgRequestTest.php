@@ -2,9 +2,8 @@
 
 namespace WechatOfficialAccountCustomServiceBundle\Tests\Request;
 
-use HttpClientBundle\Tests\Request\RequestTestCase;
+use HttpClientBundle\Test\RequestTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use WechatOfficialAccountCustomServiceBundle\Request\UploadKfAccountHeadimgRequest;
 
