@@ -7,6 +7,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Tourze\BundleDependency\BundleDependencyInterface;
 use Tourze\EasyAdminEnumFieldBundle\EasyAdminEnumFieldBundle;
 use WechatOfficialAccountBundle\WechatOfficialAccountBundle;
+use Tourze\EasyAdminMenuBundle\EasyAdminMenuBundle;
 
 class WechatOfficialAccountCustomServiceBundle extends Bundle implements BundleDependencyInterface
 {
@@ -16,6 +17,7 @@ class WechatOfficialAccountCustomServiceBundle extends Bundle implements BundleD
             WechatOfficialAccountBundle::class => ['all' => true],
             DoctrineBundle::class => ['all' => true],
             EasyAdminEnumFieldBundle::class => ['all' => true],
+            EasyAdminMenuBundle::class => ['all' => true],
         ];
     }
 }
