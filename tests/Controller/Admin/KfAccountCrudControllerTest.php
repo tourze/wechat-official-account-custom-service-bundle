@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Tourze\EasyAdminEnumFieldBundle\Field\EnumField;
@@ -94,7 +95,7 @@ final class KfAccountCrudControllerTest extends AbstractEasyAdminControllerTestC
         $enumField = EnumField::new('status', '状态');
         $enumFieldFactory->expects($this->once())
             ->method('createEnumField')
-            ->with('status', '状态', \PHPUnit\Framework\Assert::callback(function ($param) {
+            ->with('status', '状态', Assert::callback(function ($param) {
                 return is_array($param);
             }))
             ->willReturn($enumField)

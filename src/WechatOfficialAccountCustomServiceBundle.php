@@ -6,8 +6,8 @@ use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Tourze\BundleDependency\BundleDependencyInterface;
 use Tourze\EasyAdminEnumFieldBundle\EasyAdminEnumFieldBundle;
-use WechatOfficialAccountBundle\WechatOfficialAccountBundle;
 use Tourze\EasyAdminMenuBundle\EasyAdminMenuBundle;
+use WechatOfficialAccountBundle\WechatOfficialAccountBundle;
 
 class WechatOfficialAccountCustomServiceBundle extends Bundle implements BundleDependencyInterface
 {
