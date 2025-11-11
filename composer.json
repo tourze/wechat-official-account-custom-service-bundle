@@ -29,7 +29,7 @@
     "tourze/easy-admin-enum-field-bundle": "1.0.*",
     "tourze/easy-admin-menu-bundle": "1.0.*",
     "tourze/enum-extra": "1.0.*",
-    "tourze/http-client-bundle": "1.0.*",
+    "tourze/http-client-bundle": "1.1.*",
     "tourze/symfony-dependency-service-loader": "1.0.*",
     "tourze/wechat-official-account-bundle": "0.1.*"
   },
