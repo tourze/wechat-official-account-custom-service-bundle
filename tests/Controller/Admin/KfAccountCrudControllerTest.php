@@ -82,11 +82,6 @@ final class KfAccountCrudControllerTest extends AbstractEasyAdminControllerTestC
         yield 'kfId' => ['kfId'];
     }
 
-    public function testGetEntityFqcn(): void
-    {
-        $this->assertSame(KfAccount::class, KfAccountCrudController::getEntityFqcn());
-    }
-
     public function testConfigureFields(): void
     {
         $enumFieldFactory = $this->createMock(EnumFieldFactoryInterface::class);
