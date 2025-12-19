@@ -65,9 +65,7 @@ final class KfAccountCrudController extends AbstractCrudController
             ->setRequired(false)
             ->setHelp('客服头像URL，可选')
         ;
-
-        /** @phpstan-ignore-next-line */
-        yield $this->fieldService->createEnumField('status', '状态', KfAccountStatus::cases())
+        yield $this->fieldService->createEnumField('status', '状态', KfAccountStatus::cases()) // @phpstan-ignore-line
             ->setRequired(true)
         ;
 

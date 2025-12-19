@@ -13,7 +13,7 @@ use WechatOfficialAccountCustomServiceBundle\Enum\KfAccountStatus;
  * @extends ServiceEntityRepository<KfAccount>
  */
 #[AsRepository(entityClass: KfAccount::class)]
-class KfAccountRepository extends ServiceEntityRepository
+final class KfAccountRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

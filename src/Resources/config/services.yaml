@@ -3,13 +3,13 @@ services:
   _defaults:
     autowire: true      # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+    public: false
 
   WechatOfficialAccountCustomServiceBundle\Command\:
     resource: '../../Command/'
-  WechatOfficialAccountCustomServiceBundle\Controller\:
-    resource: '../../Controller/'
   WechatOfficialAccountCustomServiceBundle\EventSubscriber\:
     resource: '../../EventSubscriber/'
+    public: true
   WechatOfficialAccountCustomServiceBundle\MessageHandler\:
     resource: '../../MessageHandler/'
   WechatOfficialAccountCustomServiceBundle\Procedure\:
@@ -18,11 +18,18 @@ services:
     resource: '../../Repository/'
   WechatOfficialAccountCustomServiceBundle\Service\:
     resource: '../../Service/'
+    public: true
+
+  # Controller 需要公开访问
+  WechatOfficialAccountCustomServiceBundle\Controller\:
+    resource: '../../Controller/'
+    public: true
 
   # 绑定字段工厂接口
   WechatOfficialAccountCustomServiceBundle\Service\FieldFactoryInterface:
     '@WechatOfficialAccountCustomServiceBundle\Service\FieldService'
 
+  # 外部服务配置
   Tourze\FileNameGenerator\RandomNameGenerator: ~
 
   # 绑定 EasyAdminEnumFieldBundle 服务

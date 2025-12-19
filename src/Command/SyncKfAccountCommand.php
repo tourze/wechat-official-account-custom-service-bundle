@@ -21,7 +21,7 @@ use WechatOfficialAccountCustomServiceBundle\Request\GetKfAccountListRequest;
     name: self::NAME,
     description: '同步微信公众号客服账号',
 )]
-class SyncKfAccountCommand extends Command
+final class SyncKfAccountCommand extends Command
 {
     public const NAME = 'wechat-official-account:custom-service:sync-account-list';
 

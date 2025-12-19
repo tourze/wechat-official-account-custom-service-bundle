@@ -19,7 +19,7 @@ use WechatOfficialAccountCustomServiceBundle\Request\UploadKfAccountHeadimgReque
 #[AsEntityListener(event: Events::postUpdate, method: 'postUpdate', entity: KfAccount::class)]
 #[AsEntityListener(event: Events::preRemove, method: 'preRemove', entity: KfAccount::class)]
 #[WithMonologChannel(channel: 'wechat_official_account_custom_service')]
-class KfAccountListener
+final class KfAccountListener
 {
     public function __construct(
         private readonly OfficialAccountClient $client,

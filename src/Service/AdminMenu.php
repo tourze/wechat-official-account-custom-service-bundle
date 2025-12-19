@@ -9,7 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Menu\MenuItemInterface;
 use Tourze\EasyAdminMenuBundle\Service\MenuProviderInterface;
 use WechatOfficialAccountCustomServiceBundle\Controller\Admin\KfAccountCrudController;
 
-class AdminMenu implements MenuProviderInterface
+final class AdminMenu implements MenuProviderInterface
 {
     /**
      * @return iterable<MenuItemInterface>
